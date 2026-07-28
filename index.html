@@ -16,7 +16,7 @@
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        body { background-color: #050508; color: white; }
+        body { background-color: #0b0c10; color: white; }
     </style>
 </head>
 <body>
@@ -24,137 +24,212 @@
 
     <script type="text/babel">
         function App() {
-            const [currentScreen, setCurrentScreen] = React.useState('welcome'); // 'welcome', 'explore', 'detail'
+            const [currentScreen, setCurrentScreen] = React.useState('welcome'); // 'welcome', 'app'
             const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-            const [showAuthModal, setShowAuthModal] = React.useState(false);
-            const [selectedProject, setSelectedProject] = React.useState(null);
+            const [activeModal, setActiveModal] = React.useState(null); // 'google', 'apple', 'login'
+            const [emailInput, setEmailInput] = React.useState('');
 
-            // Proteger acciones exclusivas (ej. unirse a un proyecto)
-            const handleRestrictedAction = (actionType, projectData = null) => {
-                if (!isLoggedIn) {
-                    setShowAuthModal(true); // Pide registro si no ha iniciado sesión
-                } else {
-                    if (actionType === 'join') {
-                        alert("¡Te has unido al proyecto exitosamente!");
-                    }
+            const handleGoogleLogin = (e) => {
+                e.preventDefault();
+                if (!emailInput || !emailInput.includes('@')) {
+                    alert("Por favor ingresa un correo válido.");
+                    return;
                 }
+                setIsLoggedIn(true);
+                setActiveModal(null);
+                setEmailInput('');
+                setCurrentScreen('app');
+                alert("¡Sesión iniciada con Google!");
+            };
+
+            const handleAppleLogin = (e) => {
+                e.preventDefault();
+                if (!emailInput || !emailInput.includes('@')) {
+                    alert("Por favor ingresa un Apple ID válido.");
+                    return;
+                }
+                setIsLoggedIn(true);
+                setActiveModal(null);
+                setEmailInput('');
+                setCurrentScreen('app');
+                alert("¡Sesión iniciada con Apple ID!");
             };
 
             return (
-                <div className="min-h-screen flex items-center justify-center p-4">
-                    <div className="w-full max-w-md bg-[#0a0a0f] border border-gray-800 rounded-3xl p-6 text-white shadow-2xl relative overflow-hidden">
+                <div className="min-h-screen flex items-center justify-center p-2">
+                    {/* Contenedor con apariencia de Celular */}
+                    <div className="w-full max-w-[390px] h-[800px] bg-[#050508] border-[8px] border-[#181a26] rounded-[48px] shadow-2xl relative overflow-hidden flex flex-col justify-between p-6">
                         
-                        {/* PANTALLA 1: BIENVENIDA */}
+                        {/* BARRA SUPERIOR DE iPHONE (Hora y 5G/Batería) */}
+                        <div className="flex justify-between items-center px-4 pt-1 text-xs font-semibold text-white">
+                            <span>9:41</span>
+                            <div className="w-20 h-4 bg-[#181a26] rounded-full mx-auto absolute left-1/2 transform -translate-x-1/2 top-1"></div>
+                            <div className="flex items-center gap-1.5 text-[10px]">
+                                <span className="tracking-tighter">5G</span>
+                                <i class="fa-solid fa-battery-full text-sm"></i>
+                            </div>
+                        </div>
+
+                        {/* PANTALLA 1: BIENVENIDA (Tu diseño original exacto) */}
                         {currentScreen === 'welcome' && (
-                            <div className="py-6">
-                                <div className="text-center my-8">
-                                    <div className="text-purple-500 text-4xl mb-3 animate-pulse">
-                                        <i className="fa-solid fa-bolt"></i>
-                                    </div>
-                                    <h1 className="text-3xl font-serif italic font-bold tracking-wider mb-2">IMPULSA</h1>
-                                    <p className="text-xs tracking-widest text-cyan-400 font-semibold uppercase">TU IDEA. TU GENTE. TU PROYECTO.</p>
+                            <div className="flex flex-col items-center justify-center flex-1 text-center my-auto pb-6">
+                                {/* Ícono del Rayo */}
+                                <div className="mb-4">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-[0_0_15px_rgba(168,85,247,0.6)]">
+                                        <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" fill="url(#paint0_linear)"/>
+                                        <defs>
+                                            <linearGradient id="paint0_linear" x1="3" y1="2" x2="21" y2="22" gradientUnits="userSpaceOnUse">
+                                                <stop stop-color="#c084fc"/>
+                                                <stop offset="1" stop-color="#f43f5e"/>
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
                                 </div>
-                                
-                                <div className="space-y-3 mt-6">
+
+                                {/* Título IMPULSA */}
+                                <h1 className="text-4xl font-serif italic font-bold tracking-wider text-white mb-1">
+                                    IMPULSA
+                                </h1>
+
+                                {/* Eslogan con tus colores exactos */}
+                                <p className="text-[11px] tracking-widest font-bold mb-10">
+                                    <span className="text-amber-400">TU IDEA.</span> <span className="text-white">TU GENTE.</span> <span className="text-cyan-400">TU PROYECTO.</span>
+                                </p>
+
+                                {/* Botones originales */}
+                                <div className="w-full space-y-3.5 px-2">
                                     <button 
-                                        onClick={() => setCurrentScreen('explore')}
-                                        className="w-full py-3.5 rounded-full bg-gradient-to-r from-pink-600 to-amber-500 font-medium text-white shadow-lg transition-transform active:scale-95"
+                                        onClick={() => setCurrentScreen('app')}
+                                        className="w-full py-4 rounded-full bg-gradient-to-r from-[#ec4899] to-[#f59e0b] font-semibold text-white shadow-[0_0_20px_rgba(236,72,153,0.4)] transition-transform active:scale-95 text-sm"
                                     >
                                         Comenzar
                                     </button>
                                     
                                     <button 
-                                        onClick={() => setShowAuthModal(true)}
-                                        className="w-full py-3.5 rounded-full bg-transparent hover:bg-white/5 border border-gray-700 text-white font-medium transition-colors flex items-center justify-center gap-2"
+                                        onClick={() => setActiveModal('google')}
+                                        className="w-full py-4 rounded-full bg-transparent hover:bg-white/5 border border-gray-800 text-white font-medium transition-colors flex items-center justify-center gap-3 text-sm"
                                     >
-                                        <i className="fa-brands fa-google"></i> Continuar con Google
+                                        <i className="fa-brands fa-google text-red-500"></i> Continuar con Google
                                     </button>
 
                                     <button 
-                                        onClick={() => setShowAuthModal(true)}
-                                        className="w-full py-3.5 rounded-full bg-transparent hover:bg-white/5 border border-gray-700 text-white font-medium transition-colors flex items-center justify-center gap-2"
+                                        onClick={() => setActiveModal('apple')}
+                                        className="w-full py-4 rounded-full bg-transparent hover:bg-white/5 border border-gray-800 text-white font-medium transition-colors flex items-center justify-center gap-3 text-sm"
                                     >
-                                        <i className="fa-brands fa-apple"></i> Continuar con Apple
+                                        <i className="fa-brands fa-apple text-white text-base"></i> Continuar con Apple
                                     </button>
                                 </div>
 
-                                <div className="text-center mt-6">
-                                    <p className="text-xs text-gray-400">¿Ya tienes cuenta? <span onClick={() => setShowAuthModal(true)} className="text-pink-500 font-semibold cursor-pointer">Iniciar sesión</span></p>
+                                {/* Enlace inferior */}
+                                <div className="mt-8">
+                                    <p className="text-xs text-gray-400">
+                                        ¿Ya tienes cuenta? <span onClick={() => setActiveModal('google')} className="text-[#f43f5e] font-semibold cursor-pointer hover:underline">Iniciar sesión</span>
+                                    </p>
                                 </div>
                             </div>
                         )}
 
-                        {/* PANTALLA 2: EXPLORAR PROYECTOS (Navegación Libre) */}
-                        {currentScreen === 'explore' && (
-                            <div className="py-2">
-                                <div className="flex items-center justify-between mb-4">
-                                    <button onClick={() => setCurrentScreen('welcome')} className="text-gray-400 hover:text-white text-sm">
-                                        <i className="fa-solid fa-arrow-left mr-1">Volver</i>
-                                    </button>
-                                    <h2 className="font-bold tracking-wider text-sm">Explorar Proyectos</h2>
-                                    <div className="w-5"></div>
-                                </div>
-
-                                <div className="space-y-4 max-h-[400px] overflow-y-auto no-scrollbar pr-1">
-                                    <div className="bg-[#12121a] border border-gray-800 rounded-2xl p-4">
-                                        <h3 className="font-bold text-pink-400 mb-1">Innovación Verde</h3>
-                                        <p className="text-xs text-gray-400 mb-3">Proyecto comunitario de reciclaje inteligente.</p>
-                                        <button 
-                                            onClick={() => handleRestrictedAction('join')}
-                                            className="w-full py-2 rounded-xl bg-purple-600/30 border border-purple-500 text-purple-300 text-xs font-semibold hover:bg-purple-600 hover:text-white transition-all"
-                                        >
-                                            Unirme al Proyecto (Requiere Registro)
+                        {/* PANTALLA 2: APP PRINCIPAL (Al dar Comenzar) */}
+                        {currentScreen === 'app' && (
+                            <div className="flex-1 py-4 flex flex-col justify-between">
+                                <div>
+                                    <div className="flex items-center justify-between mb-6">
+                                        <button onClick={() => setCurrentScreen('welcome')} className="text-gray-400 hover:text-white text-sm flex items-center gap-1">
+                                            <i className="fa-solid fa-arrow-left"></i> Salir
                                         </button>
+                                        <h2 className="font-bold tracking-wider text-sm text-[#ec4899]">Panel Principal</h2>
+                                        <div className="w-8"></div>
                                     </div>
 
-                                    <div className="bg-[#12121a] border border-gray-800 rounded-2xl p-4">
-                                        <h3 className="font-bold text-cyan-400 mb-1">App Educativa Rural</h3>
-                                        <p className="text-xs text-gray-400 mb-3">Plataforma de aprendizaje offline para niños.</p>
-                                        <button 
-                                            onClick={() => handleRestrictedAction('join')}
-                                            className="w-full py-2 rounded-xl bg-cyan-600/30 border border-cyan-500 text-cyan-300 text-xs font-semibold hover:bg-cyan-600 hover:text-white transition-all"
-                                        >
-                                            Unirme al Proyecto (Requiere Registro)
+                                    <div className="bg-[#12121a] border border-gray-800 rounded-2xl p-4 mb-4">
+                                        <h3 className="font-bold text-sm text-white mb-1">¡Bienvenido a IMPULSA!</h3>
+                                        <p className="text-xs text-gray-400">Estás explorando la aplicación libremente.</p>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        <div className="bg-[#12121a] border border-gray-800 rounded-2xl p-4">
+                                            <h4 className="font-bold text-[#ec4899] text-xs mb-1">Innovación Verde</h4>
+                                            <p className="text-[11px] text-gray-400 mb-3">Proyecto comunitario de reciclaje inteligente.</p>
+                                            <button 
+                                                onClick={() => alert("¡Acción realizada con éxito!")}
+                                                className="w-full py-2 rounded-xl bg-purple-600/30 border border-purple-500 text-purple-300 text-xs font-semibold hover:bg-purple-600 hover:text-white transition-all"
+                                            >
+                                                Ver Detalles
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="text-center pb-2">
+                                    <button onClick={() => setCurrentScreen('welcome')} className="text-xs text-gray-500 hover:text-gray-300 underline">
+                                        Regresar al inicio
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* MODAL GOOGLE */}
+                        {activeModal === 'google' && (
+                            <div className="absolute inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center p-6 z-50">
+                                <div className="bg-[#12121c] border border-gray-800 rounded-3xl p-6 w-full text-center relative shadow-2xl">
+                                    <button onClick={() => { setActiveModal(null); setEmailInput(''); }} className="absolute top-4 right-4 text-gray-400 hover:text-white">
+                                        <i className="fa-solid fa-xmark text-lg"></i>
+                                    </button>
+                                    <div className="text-red-500 text-3xl mb-3"><i className="fa-brands fa-google"></i></div>
+                                    <h3 className="text-base font-bold mb-1">Continuar con Google</h3>
+                                    <p className="text-[11px] text-gray-400 mb-4">Ingresa tu correo para acceder.</p>
+                                    <form onSubmit={handleGoogleLogin} className="space-y-3">
+                                        <input 
+                                            type="email" 
+                                            placeholder="tucorreo@gmail.com" 
+                                            value={emailInput}
+                                            onChange={(e) => setEmailInput(e.target.value)}
+                                            className="w-full px-4 py-3 rounded-xl bg-black/50 border border-gray-700 text-white text-xs focus:outline-none focus:border-[#ec4899]"
+                                            required
+                                        />
+                                        <button type="submit" className="w-full py-3 rounded-xl bg-gradient-to-r from-[#ec4899] to-[#f59e0b] text-white font-medium text-xs shadow-md">
+                                            Siguiente
                                         </button>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* VENTANA EMERGENTE (MODAL) DE REGISTRO / LOGIN */}
-                        {showAuthModal && (
-                            <div className="absolute inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-                                <div className="bg-[#12121c] border border-gray-700 rounded-2xl p-6 w-full text-center relative shadow-2xl">
-                                    <button 
-                                        onClick={() => setShowAuthModal(false)}
-                                        className="absolute top-3 right-3 text-gray-400 hover:text-white"
-                                    >
-                                        <i className="fa-solid fa-xmark"></i>
-                                    </button>
-                                    
-                                    <div className="text-pink-500 text-3xl mb-2">
-                                        <i className="fa-solid fa-lock"></i>
-                                    </div>
-                                    <h3 className="text-lg font-bold mb-1">Únete a IMPULSA</h3>
-                                    <p className="text-xs text-gray-400 mb-4">Inicia sesión o regístrate para interactuar y unirte a proyectos.</p>
-                                    
-                                    <button 
-                                        onClick={() => { setIsLoggedIn(true); setShowAuthModal(false); alert("¡Sesión iniciada con éxito!"); }}
-                                        className="w-full py-3 rounded-xl bg-gradient-to-r from-pink-600 to-amber-500 text-white font-medium text-sm mb-3 shadow-md"
-                                    >
-                                        Acceder con Google / Apple
-                                    </button>
-                                    
-                                    <button 
-                                        onClick={() => setShowAuthModal(false)}
-                                        className="text-xs text-gray-500 hover:text-gray-300 underline"
-                                    >
-                                    Cancelar
+                                    </form>
+                                    <button onClick={() => { setActiveModal(null); setEmailInput(''); }} className="mt-4 text-[11px] text-gray-500 hover:text-gray-300 underline">
+                                        Cancelar
                                     </button>
                                 </div>
                             </div>
                         )}
 
+                        {/* MODAL APPLE */}
+                        {activeModal === 'apple' && (
+                            <div className="absolute inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center p-6 z-50">
+                                <div className="bg-[#12121c] border border-gray-800 rounded-3xl p-6 w-full text-center relative shadow-2xl">
+                                    <button onClick={() => { setActiveModal(null); setEmailInput(''); }} className="absolute top-4 right-4 text-gray-400 hover:text-white">
+                                        <i className="fa-solid fa-xmark text-lg"></i>
+                                    </button>
+                                    <div className="text-white text-3xl mb-3"><i className="fa-brands fa-apple"></i></div>
+                                    <h3 className="text-base font-bold mb-1">Continuar con Apple</h3>
+                                    <p className="text-[11px] text-gray-400 mb-4">Ingresa tu Apple ID para acceder.</p>
+                                    <form onSubmit={handleAppleLogin} className="space-y-3">
+                                        <input 
+                                            type="email" 
+                                            placeholder="tu-apple-id@icloud.com" 
+                                            value={emailInput}
+                                            onChange={(e) => setEmailInput(e.target.value)}
+                                            className="w-full px-4 py-3 rounded-xl bg-black/50 border border-gray-700 text-white text-xs focus:outline-none focus:border-white"
+                                            required
+                                        />
+                                        <button type="submit" className="w-full py-3 rounded-xl bg-white text-black font-semibold text-xs shadow-md hover:bg-gray-200">
+                                            Continuar con Apple
+                                        </button>
+                                    </form>
+                                    <button onClick={() => { setActiveModal(null); setEmailInput(''); }} className="mt-4 text-[11px] text-gray-500 hover:text-gray-300 underline">
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Barra inferior del celular */}
+                        <div className="w-32 h-1 bg-gray-700 rounded-full mx-auto mt-2"></div>
                     </div>
                 </div>
             );

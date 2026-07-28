@@ -24,20 +24,31 @@
 
     <script type="text/babel">
         function App() {
-            const [currentScreen, setCurrentScreen] = React.useState('welcome'); // 'welcome', 'explore', 'detail'
+            const [currentScreen, setCurrentScreen] = React.useState('welcome'); // 'welcome', 'explore'
             const [isLoggedIn, setIsLoggedIn] = React.useState(false);
             const [showAuthModal, setShowAuthModal] = React.useState(false);
-            const [selectedProject, setSelectedProject] = React.useState(null);
+            const [emailInput, setEmailInput] = React.useState('');
 
             // Proteger acciones exclusivas (ej. unirse a un proyecto)
-            const handleRestrictedAction = (actionType, projectData = null) => {
+            const handleRestrictedAction = () => {
                 if (!isLoggedIn) {
-                    setShowAuthModal(true); // Pide registro si no ha iniciado sesión
+                    setShowAuthModal(true); 
                 } else {
-                    if (actionType === 'join') {
-                        alert("¡Te has unido al proyecto exitosamente!");
-                    }
+                    alert("¡Te has unido al proyecto exitosamente!");
                 }
+            };
+
+            // Simular el proceso con correo de Google
+            const handleGoogleLogin = (e) => {
+                e.preventDefault();
+                if (!emailInput || !emailInput.includes('@')) {
+                    alert("Por favor ingresa un correo electrónico válido.");
+                    return;
+                }
+                setIsLoggedIn(true);
+                setShowAuthModal(false);
+                setEmailInput('');
+                alert("¡Sesión iniciada correctamente con " + emailInput + "!");
             };
 
             return (
@@ -100,7 +111,7 @@
                                         <h3 className="font-bold text-pink-400 mb-1">Innovación Verde</h3>
                                         <p className="text-xs text-gray-400 mb-3">Proyecto comunitario de reciclaje inteligente.</p>
                                         <button 
-                                            onClick={() => handleRestrictedAction('join')}
+                                            onClick={handleRestrictedAction}
                                             className="w-full py-2 rounded-xl bg-purple-600/30 border border-purple-500 text-purple-300 text-xs font-semibold hover:bg-purple-600 hover:text-white transition-all"
                                         >
                                             Unirme al Proyecto (Requiere Registro)
@@ -111,7 +122,7 @@
                                         <h3 className="font-bold text-cyan-400 mb-1">App Educativa Rural</h3>
                                         <p className="text-xs text-gray-400 mb-3">Plataforma de aprendizaje offline para niños.</p>
                                         <button 
-                                            onClick={() => handleRestrictedAction('join')}
+                                            onClick={handleRestrictedAction}
                                             className="w-full py-2 rounded-xl bg-cyan-600/30 border border-cyan-500 text-cyan-300 text-xs font-semibold hover:bg-cyan-600 hover:text-white transition-all"
                                         >
                                             Unirme al Proyecto (Requiere Registro)
@@ -121,7 +132,7 @@
                             </div>
                         )}
 
-                        {/* VENTANA EMERGENTE (MODAL) DE REGISTRO / LOGIN */}
+                        {/* VENTANA EMERGENTE (MODAL) QUE PIDE EL CORREO */}
                         {showAuthModal && (
                             <div className="absolute inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
                                 <div className="bg-[#12121c] border border-gray-700 rounded-2xl p-6 w-full text-center relative shadow-2xl">
@@ -133,23 +144,33 @@
                                     </button>
                                     
                                     <div className="text-pink-500 text-3xl mb-2">
-                                        <i className="fa-solid fa-lock"></i>
+                                        <i className="fa-solid fa-envelope"></i>
                                     </div>
-                                    <h3 className="text-lg font-bold mb-1">Únete a IMPULSA</h3>
-                                    <p className="text-xs text-gray-400 mb-4">Inicia sesión o regístrate para interactuar y unirte a proyectos.</p>
+                                    <h3 className="text-lg font-bold mb-1">Iniciar sesión con Google</h3>
+                                    <p className="text-xs text-gray-400 mb-4">Ingresa tu correo electrónico para continuar.</p>
                                     
-                                    <button 
-                                        onClick={() => { setIsLoggedIn(true); setShowAuthModal(false); alert("¡Sesión iniciada con éxito!"); }}
-                                        className="w-full py-3 rounded-xl bg-gradient-to-r from-pink-600 to-amber-500 text-white font-medium text-sm mb-3 shadow-md"
-                                    >
-                                        Acceder con Google / Apple
-                                    </button>
+                                    <form onSubmit={handleGoogleLogin} className="space-y-3">
+                                        <input 
+                                            type="email" 
+                                            placeholder="tu-correo@gmail.com" 
+                                            value={emailInput}
+                                            onChange={(e) => setEmailInput(e.target.value)}
+                                            className="w-full px-4 py-3 rounded-xl bg-black/50 border border-gray-700 text-white text-sm focus:outline-none focus:border-pink-500"
+                                            required
+                                        />
+                                        <button 
+                                            type="submit"
+                                            className="w-full py-3 rounded-xl bg-gradient-to-r from-pink-600 to-amber-500 text-white font-medium text-sm shadow-md transition-transform active:scale-95"
+                                        >
+                                            Continuar
+                                        </button>
+                                    </form>
                                     
                                     <button 
                                         onClick={() => setShowAuthModal(false)}
-                                        className="text-xs text-gray-500 hover:text-gray-300 underline"
+                                        className="mt-3 text-xs text-gray-500 hover:text-gray-300 underline"
                                     >
-                                    Cancelar
+                                        Cancelar
                                     </button>
                                 </div>
                             </div>

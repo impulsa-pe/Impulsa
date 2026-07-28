@@ -4,184 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IMPULSA</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- React y ReactDOM -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <!-- Babel para compilar JSX -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- FontAwesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        body { background-color: #050508; color: white; }
+        body { background-color: #050508; }
     </style>
 </head>
 <body>
-    <div id="root"></div>
-
-    <script type="text/babel">
-        function App() {
-            const [currentScreen, setCurrentScreen] = React.useState('welcome'); // 'welcome', 'explore'
-            const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-            const [showAuthModal, setShowAuthModal] = React.useState(false);
-            const [emailInput, setEmailInput] = React.useState('');
-
-            // Proteger acciones exclusivas (ej. unirse a un proyecto)
-            const handleRestrictedAction = () => {
-                if (!isLoggedIn) {
-                    setShowAuthModal(true); 
-                } else {
-                    alert("¡Te has unido al proyecto exitosamente!");
-                }
-            };
-
-            // Simular el proceso con correo de Google
-            const handleGoogleLogin = (e) => {
-                e.preventDefault();
-                if (!emailInput || !emailInput.includes('@')) {
-                    alert("Por favor ingresa un correo electrónico válido.");
-                    return;
-                }
-                setIsLoggedIn(true);
-                setShowAuthModal(false);
-                setEmailInput('');
-                alert("¡Sesión iniciada correctamente con " + emailInput + "!");
-            };
-
-            return (
-                <div className="min-h-screen flex items-center justify-center p-4">
-                    <div className="w-full max-w-md bg-[#0a0a0f] border border-gray-800 rounded-3xl p-6 text-white shadow-2xl relative overflow-hidden">
-                        
-                        {/* PANTALLA 1: BIENVENIDA */}
-                        {currentScreen === 'welcome' && (
-                            <div className="py-6">
-                                <div className="text-center my-8">
-                                    <div className="text-purple-500 text-4xl mb-3 animate-pulse">
-                                        <i className="fa-solid fa-bolt"></i>
-                                    </div>
-                                    <h1 className="text-3xl font-serif italic font-bold tracking-wider mb-2">IMPULSA</h1>
-                                    <p className="text-xs tracking-widest text-cyan-400 font-semibold uppercase">TU IDEA. TU GENTE. TU PROYECTO.</p>
-                                </div>
-                                
-                                <div className="space-y-3 mt-6">
-                                    <button 
-                                        onClick={() => setCurrentScreen('explore')}
-                                        className="w-full py-3.5 rounded-full bg-gradient-to-r from-pink-600 to-amber-500 font-medium text-white shadow-lg transition-transform active:scale-95"
-                                    >
-                                        Comenzar
-                                    </button>
-                                    
-                                    <button 
-                                        onClick={() => setShowAuthModal(true)}
-                                        className="w-full py-3.5 rounded-full bg-transparent hover:bg-white/5 border border-gray-700 text-white font-medium transition-colors flex items-center justify-center gap-2"
-                                    >
-                                        <i className="fa-brands fa-google"></i> Continuar con Google
-                                    </button>
-
-                                    <button 
-                                        onClick={() => setShowAuthModal(true)}
-                                        className="w-full py-3.5 rounded-full bg-transparent hover:bg-white/5 border border-gray-700 text-white font-medium transition-colors flex items-center justify-center gap-2"
-                                    >
-                                        <i className="fa-brands fa-apple"></i> Continuar con Apple
-                                    </button>
-                                </div>
-
-                                <div className="text-center mt-6">
-                                    <p className="text-xs text-gray-400">¿Ya tienes cuenta? <span onClick={() => setShowAuthModal(true)} className="text-pink-500 font-semibold cursor-pointer">Iniciar sesión</span></p>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* PANTALLA 2: EXPLORAR PROYECTOS (Navegación Libre) */}
-                        {currentScreen === 'explore' && (
-                            <div className="py-2">
-                                <div className="flex items-center justify-between mb-4">
-                                    <button onClick={() => setCurrentScreen('welcome')} className="text-gray-400 hover:text-white text-sm">
-                                        <i className="fa-solid fa-arrow-left mr-1">Volver</i>
-                                    </button>
-                                    <h2 className="font-bold tracking-wider text-sm">Explorar Proyectos</h2>
-                                    <div className="w-5"></div>
-                                </div>
-
-                                <div className="space-y-4 max-h-[400px] overflow-y-auto no-scrollbar pr-1">
-                                    <div className="bg-[#12121a] border border-gray-800 rounded-2xl p-4">
-                                        <h3 className="font-bold text-pink-400 mb-1">Innovación Verde</h3>
-                                        <p className="text-xs text-gray-400 mb-3">Proyecto comunitario de reciclaje inteligente.</p>
-                                        <button 
-                                            onClick={handleRestrictedAction}
-                                            className="w-full py-2 rounded-xl bg-purple-600/30 border border-purple-500 text-purple-300 text-xs font-semibold hover:bg-purple-600 hover:text-white transition-all"
-                                        >
-                                            Unirme al Proyecto (Requiere Registro)
-                                        </button>
-                                    </div>
-
-                                    <div className="bg-[#12121a] border border-gray-800 rounded-2xl p-4">
-                                        <h3 className="font-bold text-cyan-400 mb-1">App Educativa Rural</h3>
-                                        <p className="text-xs text-gray-400 mb-3">Plataforma de aprendizaje offline para niños.</p>
-                                        <button 
-                                            onClick={handleRestrictedAction}
-                                            className="w-full py-2 rounded-xl bg-cyan-600/30 border border-cyan-500 text-cyan-300 text-xs font-semibold hover:bg-cyan-600 hover:text-white transition-all"
-                                        >
-                                            Unirme al Proyecto (Requiere Registro)
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* VENTANA EMERGENTE (MODAL) QUE PIDE EL CORREO */}
-                        {showAuthModal && (
-                            <div className="absolute inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-                                <div className="bg-[#12121c] border border-gray-700 rounded-2xl p-6 w-full text-center relative shadow-2xl">
-                                    <button 
-                                        onClick={() => setShowAuthModal(false)}
-                                        className="absolute top-3 right-3 text-gray-400 hover:text-white"
-                                    >
-                                        <i className="fa-solid fa-xmark"></i>
-                                    </button>
-                                    
-                                    <div className="text-pink-500 text-3xl mb-2">
-                                        <i className="fa-solid fa-envelope"></i>
-                                    </div>
-                                    <h3 className="text-lg font-bold mb-1">Iniciar sesión con Google</h3>
-                                    <p className="text-xs text-gray-400 mb-4">Ingresa tu correo electrónico para continuar.</p>
-                                    
-                                    <form onSubmit={handleGoogleLogin} className="space-y-3">
-                                        <input 
-                                            type="email" 
-                                            placeholder="tu-correo@gmail.com" 
-                                            value={emailInput}
-                                            onChange={(e) => setEmailInput(e.target.value)}
-                                            className="w-full px-4 py-3 rounded-xl bg-black/50 border border-gray-700 text-white text-sm focus:outline-none focus:border-pink-500"
-                                            required
-                                        />
-                                        <button 
-                                            type="submit"
-                                            className="w-full py-3 rounded-xl bg-gradient-to-r from-pink-600 to-amber-500 text-white font-medium text-sm shadow-md transition-transform active:scale-95"
-                                        >
-                                            Continuar
-                                        </button>
-                                    </form>
-                                    
-                                    <button 
-                                        onClick={() => setShowAuthModal(false)}
-                                        className="mt-3 text-xs text-gray-500 hover:text-gray-300 underline"
-                                    >
-                                        Cancelar
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-
-                    </div>
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-sm bg-[#0a0a0f] border border-gray-800 rounded-3xl p-6 text-white shadow-2xl">
+            <div class="text-center my-8">
+                <div class="text-purple-500 text-4xl mb-3">
+                    <i class="fa-solid fa-bolt"></i>
                 </div>
-            );
-        }
+                <h1 class="text-3xl font-serif italic font-bold tracking-wider mb-2">IMPULSA</h1>
+                <p class="text-xs tracking-widest text-cyan-400 font-semibold uppercase">TU IDEA. TU GENTE. TU PROYECTO.</p>
+            </div>
+            
+            <div class="space-y-3">
+                <button class="w-full py-3.5 rounded-full bg-gradient-to-r from-pink-600 to-amber-500 font-medium text-white shadow-lg">
+                    Comenzar
+                </button>
+                <button class="w-full py-3.5 rounded-full bg-transparent hover:bg-white/5 border border-gray-700 text-white font-medium flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-google"></i> Continuar con Google
+                </button>
+                <button class="w-full py-3.5 rounded-full bg-transparent hover:bg-white/5 border border-gray-700 text-white font-medium flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-apple"></i> Continuar con Apple
+                </button>
+            </div>
 
-        ReactDOM.render(<App />, document.getElementById('root'));
-    </script>
+            <div class="text-center mt-6">
+                <p class="text-xs text-gray-400">¿Ya tienes cuenta? <span class="text-pink-500 font-semibold cursor-pointer">Iniciar sesión</span></p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

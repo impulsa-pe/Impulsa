@@ -1,36 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IMPULSA</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <!-- Librería de Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    body { background-color: #050508; }
-  </style>
-</head>
-<body>
-
-  <div id="root"></div>
-
-  <!-- Script de Inicialización de Supabase -->
-  <script>
-    const SUPABASE_URL = 'https://fzyaeulvbcyowbftjufg.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publisible_l8_6ChojL2k4gDC386jasg_IbETZAn1'; 
-    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  </script>
-
-  <!-- Aplicación Principal en React -->
-  <script type="text/babel">
-    const { useState } = React;
+const { useState } = React;
 
     function App() {
       // Función para registrar usuario en Supabase al hacer clic en Comenzar
@@ -485,7 +453,7 @@
                       onClick={handleSupabaseRegister}
                       className="w-full py-3.5 rounded-full bg-gradient-to-r from-pink-600 via-pink-500 to-amber-500 text-white font-bold text-sm shadow-lg shadow-pink-500/30 active:scale-[0.98] transition-transform"
                     >
-                      Comenzar
+                      Comenzar (Registro Supabase)
                     </button>
                     
                     <button 
@@ -993,8 +961,3 @@
         </div>
       );
     }
-
-    ReactDOM.render(<App />, document.getElementById('root'));
-  </script>
-</body>
-</html>
